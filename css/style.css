@@ -332,3 +332,7 @@ p{margin:0}
   .crane{--mw:40px;--jt:10px}
   .crane__mast{background-size:40px 40px}
 }
+/* 3D jeřáb (WebGL) – nahrazuje kreslený, ten zůstává jako záloha */
+canvas.crane3d{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block}
+.has-crane3d .crane{display:none}
+.foot{position:relative;z-index:1}
