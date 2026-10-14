@@ -75,12 +75,12 @@ function build() {
   const W = document.documentElement.clientWidth;
   const foot = document.querySelector('.foot');
   const pageBottom = (foot ? foot.offsetTop : document.body.scrollHeight) - HEAD;
-  const mr = Math.max(28, W / 2 - 620);
+  const mr = Math.max(48, W / 2 - 620);
   const MW = W < 1100 ? 40 : 52;                 // šířka věže
   const mx = W / 2 - mr - MW / 2;                // střed věže (svět, x)
   const yJibTop = -14, yJibBot = -50;
   const yBase = -pageBottom;                     // spodek základu
-  const baseH = 60;
+  const baseH = 34;                              // betonový patek + kotevní deska
   const yMastTop = yJibBot - 14, yMastBot = yBase + baseH;
   layout = { W, mx, MW };
 
@@ -153,12 +153,19 @@ function build() {
   cables = [];
   for (const dx of [-6, 6]) { const c = new THREE.Mesh(unitCyl, steel); c.scale.set(0.9, 1, 0.9); c.position.x = dx; trolley.add(c); cables.push(c); }
 
-  // základ úplně dole
-  const base = new THREE.Group(); base.position.set(mx, yBase, 0); crane.add(base);
-  base.add(box(MW * 2.6, 34, MW * 2.2, concrete, 0, 17, 0));
-  base.add(box(MW * 1.9, 14, MW * 1.6, stripes, 0, 41, 0));
-  for (const x of [-1, 1]) base.add(box(MW * 0.5, 22, MW * 1.9, concrete, x * MW * 0.95, 45, 0));
-  base.add(box(MW * 1.2, 6, MW * 1.2, steel, 0, 51, 0));
+  // základ úplně dole: betonový patek, výstražný pás, kotevní deska a patky pod nohami věže
+  const base = new THREE.Group(); base.position.y = yBase; mast.add(base);   // otočený spolu s věží
+  const S = MW * 2.1;
+  base.add(box(S, 22, S, concrete, 0, 11, 0));
+  base.add(box(S + 1, 5, S + 1, stripes, 0, 19.5, 0));
+  base.add(box(MW * 1.35, 6, MW * 1.35, steel, 0, 25, 0));
+  C.forEach(([x, z]) => {
+    base.add(box(MW * 0.26, 10, MW * 0.26, steel, x, 31, z));
+    const br = new Bars();                                   // šikmé vzpěry od nohy k desce
+    br.add(V(x, 30, z), V(x * 1.3, 24, z * 0.4), MW * 0.03);
+    br.add(V(x, 30, z), V(x * 0.4, 24, z * 1.3), MW * 0.03);
+    base.add(br.mesh(yellow));
+  });
 }
 
 // ---------- kamera podle scrollu ----------

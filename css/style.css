@@ -277,7 +277,7 @@ p{margin:0}
   .crane{
     display:block;position:absolute;left:0;right:0;top:72px;height:0;
     pointer-events:none;z-index:0;overflow:hidden;
-    --mr:max(28px, calc(50% - 620px));   /* odsazení věže zprava – u pravé hrany obsahu */
+    --mr:max(48px, calc(50% - 620px));   /* odsazení věže zprava – u pravé hrany obsahu */
     --mw:52px;                /* šířka věže */
     --jt:14px;                /* horní hrana ramene */
   }
