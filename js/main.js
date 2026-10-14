@@ -6,7 +6,7 @@ if (mapBtn) mapBtn.addEventListener('click', () => {
   const f = document.createElement('iframe');
   f.className = 'map';
   f.title = 'Mapa – Staviva MACH, Václava Řezáče 76, Miřetice';
-  f.src = 'https://maps.google.com/maps?q=V%C3%A1clava%20%C5%98ez%C3%A1%C4%8De%2076%2C%20431%2051%20Kl%C3%A1%C5%A1terec%20nad%20Oh%C5%99%C3%AD&z=15&output=embed';
+  f.src = 'https://maps.google.com/maps?q=50.3849069,13.1947854&z=16&hl=cs&output=embed';
   f.loading = 'lazy';
   document.getElementById('map').replaceWith(f);
 });
@@ -35,3 +35,15 @@ if (track) {
   const html = names.map(n => `<span>${n}</span>`).join('');
   track.innerHTML = html + html;
 }
+
+// Otevřeno teď? (čas v ČR)
+const hours = {1:[7,16],2:[7,16],3:[7,16],4:[7,16],5:[7,16],6:[8,10]};
+const cz = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Prague' }));
+const day = cz.getDay(), t = cz.getHours() + cz.getMinutes() / 60, h = hours[day];
+const open = !!h && t >= h[0] && t < h[1];
+document.querySelectorAll('[data-now]').forEach(el => {
+  el.hidden = false;
+  el.classList.toggle('is-open', open);
+  el.textContent = open ? 'Teď otevřeno' : 'Teď zavřeno';
+});
+document.querySelectorAll('.hours tr').forEach(tr => tr.classList.toggle('is-today', tr.dataset.d.split(' ').includes(String(day))));
