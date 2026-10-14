@@ -11,7 +11,7 @@ Kontakt (ze starého webu a katalogu ceskestavby.cz): 474 372 020 (pevná linka 
 - `ochrana-osobnich-udaju.html`, `reklamace.html`, `404.html`
 
 Mapa: snímek z Google Map v `img/mapa.jpg` (s „Mapová data © Google“), skutečná mapa se načte až po kliknutí. Google profil: https://maps.google.com/?cid=17132082932732762030
-Sortiment je převzatý ze starého webu (+ stavební ocel podle popisu na Firmy.cz) (sekce Sortiment), roztříděný do 10 skupin. Značky jsou jen textem, loga výrobců na webu nejsou (vyžadovala by svolení).
+Sortiment je převzatý ze starého webu (sekce Sortiment) a doplněný o stavební ocel podle popisu na Firmy.cz, roztříděný do 10 skupin. Značky jsou jen textem, loga výrobců na webu nejsou (vyžadovala by svolení).
 Logo je zatím pracovní (žlutý čtverec s cihlami a nápis MACH). Písmo Archivo (variabilní) je uložené na webu. GoatCounter kód `stavivamach`.
 
 ## Otevřené body (potvrdit s klientem)
