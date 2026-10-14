@@ -47,3 +47,11 @@ document.querySelectorAll('[data-now]').forEach(el => {
   el.textContent = open ? 'Teď otevřeno' : 'Teď zavřeno';
 });
 document.querySelectorAll('.hours tr').forEach(tr => tr.classList.toggle('is-today', tr.dataset.d.split(' ').includes(String(day))));
+
+// Jeřáb: věž sahá od hlavičky až k patičce
+const crane = document.querySelector('.crane'), foot = document.querySelector('.foot');
+if (crane && foot) {
+  const fit = () => { crane.style.height = Math.max(0, foot.offsetTop - crane.offsetTop) + 'px'; };
+  fit();
+  new ResizeObserver(fit).observe(document.body);
+}
