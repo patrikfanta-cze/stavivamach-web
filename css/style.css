@@ -342,3 +342,4 @@ canvas.crane3d{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-e
 /* text O nás jako karta s tmavým rámečkem, ať vynikne proti pozadí i jeřábu */
 .about__txt{background:var(--paper);border:2px solid var(--ink);padding:28px 30px 14px;box-shadow:8px 8px 0 var(--ink)}
 @media (max-width:560px){.about__txt{padding:22px 20px 8px;box-shadow:5px 5px 0 var(--ink)}}
+.label dd a{white-space:nowrap;line-height:1.75}
