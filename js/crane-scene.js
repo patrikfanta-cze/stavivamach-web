@@ -47,6 +47,45 @@ function stripeTexture() {
 }
 const stripes = new THREE.MeshStandardMaterial({ map: stripeTexture(), metalness: 0.3, roughness: 0.5 });
 
+// ---------- cedule na háku: "Máme otevřeno" podle otevírací doby (čas v ČR) ----------
+const HOURS = { 1: [7, 16], 2: [7, 16], 3: [7, 16], 4: [7, 16], 5: [7, 16], 6: [8, 10] };
+const DAYS = ['v neděli', 'v pondělí', 'v úterý', 've středu', 've čtvrtek', 'v pátek', 'v sobotu'];
+function shopState() {
+  const force = new URLSearchParams(location.search).get('cedule');   // náhled: ?cedule=open / closed
+  const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Prague' }));
+  const d = now.getDay(), t = now.getHours() + now.getMinutes() / 60, h = HOURS[d];
+  const open = force ? force === 'open' : !!h && t >= h[0] && t < h[1];
+  if (open) return { open, title: 'MÁME OTEVŘENO', sub: `dnes do ${h ? h[1] : 16}:00` };
+  if (h && t < h[0] && !force) return { open, title: 'TEĎ ZAVŘENO', sub: `otevíráme dnes v ${h[0]}:00` };
+  for (let i = 1; i <= 7; i++) {
+    const nd = (d + i) % 7;
+    if (HOURS[nd]) return { open, title: 'TEĎ ZAVŘENO', sub: `otevíráme ${i === 1 ? 'zítra' : DAYS[nd]} v ${HOURS[nd][0]}:00` };
+  }
+}
+const signCanvas = document.createElement('canvas'); signCanvas.width = 720; signCanvas.height = 256;
+const signTex = new THREE.CanvasTexture(signCanvas); signTex.colorSpace = THREE.SRGBColorSpace; signTex.anisotropy = 4;
+function drawSign() {
+  const st = shopState(), g = signCanvas.getContext('2d'), W = 720, H = 256;
+  g.fillStyle = '#f2b400'; g.fillRect(0, 0, W, H);                       // žlutý rám
+  g.fillStyle = '#1b1c1e'; g.fillRect(14, 14, W - 28, H - 28);            // tmavá deska
+  g.strokeStyle = 'rgba(255,255,255,.08)'; g.lineWidth = 2; g.strokeRect(26, 26, W - 52, H - 52);
+  for (const [x, y] of [[40, 40], [W - 40, 40], [40, H - 40], [W - 40, H - 40]]) {   // šrouby
+    g.fillStyle = '#5b5c60'; g.beginPath(); g.arc(x, y, 8, 0, 7); g.fill();
+    g.strokeStyle = '#1b1c1e'; g.lineWidth = 2; g.beginPath(); g.moveTo(x - 5, y); g.lineTo(x + 5, y); g.stroke();
+  }
+  const col = st.open ? '#2fd16b' : '#ff4b3a';
+  g.save(); g.shadowColor = col; g.shadowBlur = 26; g.fillStyle = col;   // svítící kontrolka
+  g.beginPath(); g.arc(92, 112, 22, 0, 7); g.fill(); g.restore();
+  g.fillStyle = 'rgba(255,255,255,.55)'; g.beginPath(); g.arc(85, 105, 6, 0, 7); g.fill();
+  g.fillStyle = '#f7f6f2'; g.textBaseline = 'alphabetic';
+  g.font = '900 72px Archivo, sans-serif'; if ('fontStretch' in g) g.fontStretch = 'semi-expanded';
+  g.fillText(st.title, 136, 138, W - 166);
+  g.fillStyle = '#f4c20d'; g.font = '700 50px Archivo, sans-serif'; if ('fontStretch' in g) g.fontStretch = 'normal';
+  g.fillText(st.sub, 138, 204, W - 166);
+  signTex.needsUpdate = true;
+}
+const signFace = new THREE.MeshStandardMaterial({ map: signTex, emissiveMap: signTex, emissive: 0xffffff, emissiveIntensity: 0.45, roughness: 0.55, metalness: 0.1 });
+
 // ---------- pruty jako instance válců ----------
 const unitCyl = new THREE.CylinderGeometry(1, 1, 1, 8, 1);
 class Bars {
@@ -150,6 +189,14 @@ function build() {
   const block = box(22, 22, 14, stripes, 0, 0, 0); hook.add(block);
   const h = new THREE.Mesh(new THREE.TorusGeometry(7, 2.4, 10, 24, Math.PI * 1.4), steel);
   h.rotation.z = Math.PI * 0.8; h.position.y = -18; hook.add(h);
+  // cedule zavěšená na dvou lanech
+  const SW = 270, SH = 96, yHook = -26, ySign = yHook - 22 - SH / 2;
+  const sl = new Bars();
+  sl.add(V(0, yHook, 0), V(-SW / 2 + 22, ySign + SH / 2, 0), 1.1);
+  sl.add(V(0, yHook, 0), V(SW / 2 - 22, ySign + SH / 2, 0), 1.1);
+  hook.add(sl.mesh(steel));
+  const sign = new THREE.Mesh(new THREE.BoxGeometry(SW, SH, 4), [steel, steel, steel, steel, signFace, signFace]);
+  sign.position.y = ySign; hook.add(sign);
   cables = [];
   for (const dx of [-6, 6]) { const c = new THREE.Mesh(unitCyl, steel); c.scale.set(0.9, 1, 0.9); c.position.x = dx; trolley.add(c); cables.push(c); }
 
@@ -188,15 +235,15 @@ function frame() {
     const left = -W / 2 + 140, right = mx - 140;          // kočka jezdí po viditelné části ramena
     const k = (Math.sin(t * 0.18) + 1) / 2;
     trolley.position.x = left + (right - left) * k - mx;
-    const drop = 46 + 22 * (Math.sin(t * 0.31) + 1) / 2;   // délka lana
+    const drop = 30 + 14 * (Math.sin(t * 0.31) + 1) / 2;   // délka lana
     hook.position.y = -drop;
-    hook.rotation.z = Math.sin(t * 1.3) * 0.05;
+    hook.rotation.z = Math.sin(t * 1.1) * 0.035;
     cables.forEach(c => { c.scale.y = drop - 10; c.position.y = -(drop - 10) / 2 - 4; });
     slew.rotation.y = Math.sin(t * 0.12) * 0.035;          // rameno se lehce natáčí
     lamp.emissiveIntensity = (t % 1.4) < 0.7 ? 2.2 : 0.15;
   } else if (!frame.once) {
-    trolley.position.x = -layout.W * 0.25 - layout.mx; hook.position.y = -56;
-    cables.forEach(c => { c.scale.y = 46; c.position.y = -27; });
+    trolley.position.x = -layout.W * 0.25 - layout.mx; hook.position.y = -36;
+    cables.forEach(c => { c.scale.y = 26; c.position.y = -17; });
     frame.once = true;
   }
   place();
@@ -207,6 +254,9 @@ function frame() {
 let pending;
 const rebuild = () => { clearTimeout(pending); pending = setTimeout(() => { build(); frame.once = false; }, 120); };
 build();
+drawSign();
+document.fonts.ready.then(drawSign);
+setInterval(drawSign, 60000);
 document.documentElement.classList.add('has-crane3d');
 new ResizeObserver(rebuild).observe(document.body);
 addEventListener('resize', rebuild);
