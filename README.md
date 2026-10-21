@@ -3,7 +3,7 @@
 Nový jednostránkový web pro stavebniny Staviva MACH s.r.o. v Miřeticích u Klášterce nad Ohří (náhrada za stavivamach.cz, který je od roku 2006 „ve výstavbě“).
 
 Provozovatel: Staviva MACH s.r.o., IČ 25041177, DIČ CZ25041177 (plátce DPH), Václava Řezáče 76, Miřetice u Klášterce nad Ohří, 431 51 Klášterec nad Ohří. KS Ústí nad Labem, oddíl C, vložka 14338. Firma vznikla 7. 9. 1998 (ARES).
-Kontakt (ze starého webu a katalogu ceskestavby.cz): 474 372 020 (pevná linka a fax), 737 216 636, 604 428 248, stavmach@seznam.cz.
+Kontakt: 737 216 636 prodejna, 604 428 248 vedoucí, 474 372 020 pevná linka a fax (role potvrdil Patrik 21. 10. 2026), stavmach@seznam.cz.
 
 ## Stránky
 
