@@ -66,25 +66,25 @@ const signCanvas = document.createElement('canvas'); signCanvas.width = 720; sig
 const signTex = new THREE.CanvasTexture(signCanvas); signTex.colorSpace = THREE.SRGBColorSpace; signTex.anisotropy = 4;
 function drawSign() {
   const st = shopState(), g = signCanvas.getContext('2d'), W = 720, H = 256;
-  g.fillStyle = '#f2b400'; g.fillRect(0, 0, W, H);                       // žlutý rám
-  g.fillStyle = '#1b1c1e'; g.fillRect(14, 14, W - 28, H - 28);            // tmavá deska
-  g.strokeStyle = 'rgba(255,255,255,.08)'; g.lineWidth = 2; g.strokeRect(26, 26, W - 52, H - 52);
+  g.fillStyle = '#1b1c1e'; g.fillRect(0, 0, W, H);                       // tmavý rám
+  g.fillStyle = '#1d5bd6'; g.fillRect(14, 14, W - 28, H - 28);            // deska v barvě loga
+  g.strokeStyle = 'rgba(255,255,255,.22)'; g.lineWidth = 2; g.strokeRect(26, 26, W - 52, H - 52);
   for (const [x, y] of [[40, 40], [W - 40, 40], [40, H - 40], [W - 40, H - 40]]) {   // šrouby
-    g.fillStyle = '#5b5c60'; g.beginPath(); g.arc(x, y, 8, 0, 7); g.fill();
+    g.fillStyle = '#c9ced8'; g.beginPath(); g.arc(x, y, 8, 0, 7); g.fill();
     g.strokeStyle = '#1b1c1e'; g.lineWidth = 2; g.beginPath(); g.moveTo(x - 5, y); g.lineTo(x + 5, y); g.stroke();
   }
-  const col = st.open ? '#2fd16b' : '#ff4b3a';
+  const col = st.open ? '#3cf07c' : '#ff5a48';
   g.save(); g.shadowColor = col; g.shadowBlur = 26; g.fillStyle = col;   // svítící kontrolka
   g.beginPath(); g.arc(92, 112, 22, 0, 7); g.fill(); g.restore();
   g.fillStyle = 'rgba(255,255,255,.55)'; g.beginPath(); g.arc(85, 105, 6, 0, 7); g.fill();
   g.fillStyle = '#f7f6f2'; g.textBaseline = 'alphabetic';
   g.font = '900 72px Archivo, sans-serif'; if ('fontStretch' in g) g.fontStretch = 'semi-expanded';
   g.fillText(st.title, 136, 138, W - 166);
-  g.fillStyle = '#f4c20d'; g.font = '700 50px Archivo, sans-serif'; if ('fontStretch' in g) g.fontStretch = 'normal';
+  g.fillStyle = '#dbe5fb'; g.font = '700 50px Archivo, sans-serif'; if ('fontStretch' in g) g.fontStretch = 'normal';
   g.fillText(st.sub, 138, 204, W - 166);
   signTex.needsUpdate = true;
 }
-const signFace = new THREE.MeshStandardMaterial({ map: signTex, emissiveMap: signTex, emissive: 0xffffff, emissiveIntensity: 0.45, roughness: 0.55, metalness: 0.1 });
+const signFace = new THREE.MeshBasicMaterial({ map: signTex, toneMapped: false });   // přesné barvy loga
 
 // ---------- pruty jako instance válců ----------
 const unitCyl = new THREE.CylinderGeometry(1, 1, 1, 8, 1);

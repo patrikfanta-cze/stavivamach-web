@@ -351,3 +351,67 @@ canvas.crane3d{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-e
 @media (min-width:760px){.has-crane3d .hero{padding-top:290px}}
 .label .tels small{white-space:nowrap}
 @media (max-width:420px){.label .tels small{font-size:.64rem;letter-spacing:.03em;margin-left:2px}}
+
+/* ===================================================================
+   Nová identita Staviva MACH (logo 10/2026): modrá je hlavní barva,
+   žlutá zůstává jen pro jeřáb a výstražné pruhy.
+   =================================================================== */
+:root{
+  --blue:#1d5bd6;        /* barva loga – plochy pod bílým textem (5.9:1) */
+  --blue-deep:#1546a8;   /* hover, tmavší plochy */
+  --blue-text:#1a50bf;   /* modrá pro text na světlém pozadí (6.6:1 na --bg) */
+  --blue-soft:#cfdcf7;   /* zvýraznění pod tmavým textem */
+  --blue-on-dark:#8db0f4;/* modrá pro text na tmavém pozadí (7.4:1) */
+}
+.skip{background:var(--blue);color:#fff}
+.sec-dark :focus-visible,.foot :focus-visible{outline-color:var(--blue-on-dark)}
+:focus-visible{outline-color:var(--blue)}
+
+/* hlavička v barvě loga */
+.top{background:var(--blue);border-bottom:4px solid var(--blue-deep)}
+.brand{color:#fff;gap:12px}
+.brand__mark{width:46px;height:42px}
+.brand__text b{font-stretch:118%;font-weight:800;font-size:1.02rem;letter-spacing:.01em;line-height:1.02;text-transform:uppercase}
+.top__nav a:not(.top__tel):hover{color:#fff;text-decoration:underline;text-underline-offset:5px}
+.top__tel{background:#fff;color:var(--blue-text)}
+.top__tel:hover{background:var(--blue-soft)}
+
+.btn-y{background:var(--blue);color:#fff}
+.btn-y:hover{background:var(--blue-deep)}
+.eyebrow::before{background:var(--blue)}
+.hero h1 mark{background:linear-gradient(transparent 58%,var(--blue-soft) 58%,var(--blue-soft) 92%,transparent 92%);color:var(--blue-text)}
+
+.label__head{background:var(--blue);color:#fff}
+.label dd a{border-bottom-color:var(--blue)}
+.label dd a:hover,.phones a:hover{background:var(--blue-soft)}
+
+.facts{background:var(--blue-deep)}
+.facts li{border-color:rgba(255,255,255,.18)!important}
+.facts b{color:#fff}
+.facts span{color:#dbe5fb}
+
+.num,.tag{color:var(--blue-text)}
+.sec-dark .num{color:var(--blue-on-dark)}
+.finder:focus-within{box-shadow:0 0 0 3px var(--blue-soft)}
+.cat__ic .y{fill:var(--blue)}
+.hit{background:var(--blue-soft)}
+.steps li{border-top-color:var(--blue)}
+.steps li::before{-webkit-text-stroke-color:var(--blue-on-dark)}
+.steps a{color:var(--blue-on-dark)}
+
+.marquee{background:var(--blue);color:#fff}
+.marquee span::after{background:#fff}
+
+.back{border-bottom-color:var(--blue)}
+.cat--cta{background:var(--blue);color:#fff}
+.cat--cta:hover{background:var(--blue-deep)}
+.cat--cta .cat__no{color:#dbe5fb}
+.rv-score:hover{background:var(--blue-soft)}
+.rv-score .rv-stars,.rv .rv-stars{color:var(--blue-text)}
+.rv-score:hover .rv-stars{color:var(--blue-text)}
+.rv--big{background:var(--blue);color:#fff}
+.rv--big .rv-stars,.rv--big figcaption{color:#fff}
+.hours tr.is-today th,.hours tr.is-today td{background:linear-gradient(transparent 15%,var(--blue-soft) 15%,var(--blue-soft) 85%,transparent 85%)}
+.map-pin{background:var(--blue);box-shadow:0 0 0 2px #fff}
+.map-pin::after{border-color:#fff}
+@media (min-width:760px){.facts,.sec-dark{background:rgba(27,28,30,.9)}.facts{background:rgba(21,70,168,.94)}}
