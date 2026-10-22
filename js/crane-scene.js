@@ -4,7 +4,7 @@
 import * as THREE from 'three';
 import { RoomEnvironment } from './vendor/RoomEnvironment.js';
 
-const HEAD = 72;            // výška hlavičky (dokumentová y, kde začíná scéna)
+const HEAD = 76;            // výška hlavičky (dokumentová y, kde začíná scéna)
 const FOV = 30;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -67,7 +67,7 @@ const signTex = new THREE.CanvasTexture(signCanvas); signTex.colorSpace = THREE.
 function drawSign() {
   const st = shopState(), g = signCanvas.getContext('2d'), W = 720, H = 256;
   g.fillStyle = '#1b1c1e'; g.fillRect(0, 0, W, H);                       // tmavý rám
-  g.fillStyle = '#1d5bd6'; g.fillRect(14, 14, W - 28, H - 28);            // deska v barvě loga
+  g.fillStyle = '#0034d0'; g.fillRect(14, 14, W - 28, H - 28);            // deska v barvě loga
   g.strokeStyle = 'rgba(255,255,255,.22)'; g.lineWidth = 2; g.strokeRect(26, 26, W - 52, H - 52);
   for (const [x, y] of [[40, 40], [W - 40, 40], [40, H - 40], [W - 40, H - 40]]) {   // šrouby
     g.fillStyle = '#c9ced8'; g.beginPath(); g.arc(x, y, 8, 0, 7); g.fill();
