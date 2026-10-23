@@ -84,7 +84,9 @@ function drawSign() {
   g.fillText(st.sub, 138, 204, W - 166);
   signTex.needsUpdate = true;
 }
-const signFace = new THREE.MeshBasicMaterial({ map: signTex, toneMapped: false });   // přesné barvy loga
+const signFace = new THREE.MeshBasicMaterial({ map: signTex, toneMapped: false, depthTest: false });   // přesné barvy loga
+// cedule i její lana se kreslí vždy navrch, aby nikdy nezajížděly za konstrukci jeřábu
+const signSide = new THREE.MeshStandardMaterial({ color: 0x2a2b2e, metalness: 0.8, roughness: 0.35, depthTest: false });
 
 // ---------- pruty jako instance válců ----------
 const unitCyl = new THREE.CylinderGeometry(1, 1, 1, 8, 1);
@@ -194,9 +196,9 @@ function build() {
   const sl = new Bars();
   sl.add(V(0, yHook, 0), V(-SW / 2 + 22, ySign + SH / 2, 0), 1.1);
   sl.add(V(0, yHook, 0), V(SW / 2 - 22, ySign + SH / 2, 0), 1.1);
-  hook.add(sl.mesh(steel));
-  const sign = new THREE.Mesh(new THREE.BoxGeometry(SW, SH, 4), [steel, steel, steel, steel, signFace, signFace]);
-  sign.position.y = ySign; hook.add(sign);
+  const slings = sl.mesh(signSide); slings.renderOrder = 10; hook.add(slings);
+  const sign = new THREE.Mesh(new THREE.BoxGeometry(SW, SH, 4), [signSide, signSide, signSide, signSide, signFace, signFace]);
+  sign.position.y = ySign; sign.renderOrder = 11; hook.add(sign);
   cables = [];
   for (const dx of [-6, 6]) { const c = new THREE.Mesh(unitCyl, steel); c.scale.set(0.9, 1, 0.9); c.position.x = dx; trolley.add(c); cables.push(c); }
 
@@ -233,7 +235,8 @@ function frame() {
   if (!reduce) {
     const { W, mx } = layout;
     const left = -W / 2 + 140, right = mx - 140;          // kočka jezdí po viditelné části ramena
-    const k = (Math.sin(t * 0.18) + 1) / 2;
+    const fk = new URLSearchParams(location.search).get('kocka');   // náhled: ?kocka=0..1 (poloha kočky)
+    const k = fk !== null ? +fk : (Math.sin(t * 0.18) + 1) / 2;
     trolley.position.x = left + (right - left) * k - mx;
     const drop = 30 + 14 * (Math.sin(t * 0.31) + 1) / 2;   // délka lana
     hook.position.y = -drop;
