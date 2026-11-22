@@ -1,3 +1,2 @@
 User-agent: *
 Allow: /
-Sitemap: https://patrikfanta-cze.github.io/stavivamach-web/sitemap.xml
